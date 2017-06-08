@@ -6,7 +6,7 @@ import java.awt.*;
 public abstract class Display {
     private static boolean created = false; // Проверка открыто ли главное окно
     private static JFrame window; // рамка
-    private static Canvas content; //
+    private static Canvas content;
 
     /** Создаем окно
      *
@@ -34,8 +34,6 @@ public abstract class Display {
         window.getContentPane().add(content);
         window.pack(); // изменяем размер нашего окна, чтоб он подходил под размер нашего контента (var content)
         window.setVisible(true); // отображаем наше созданное окно
-
-
 
     }
 }
