@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 public class Main {
 
     public static void main(String[] args) {
-        Display.create(800, 600, "Tanks", 0xff000000);
+        Display.create(800, 600, "Tanks", 0xff000000, 3);
 
         Timer timer = new Timer(1000 / 60, new AbstractAction() {
 
