@@ -1,5 +1,7 @@
 package lancer.display;
 
+import lancer.IO.Input;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -82,6 +84,7 @@ public abstract class Display {
 //        ((Graphics2D) bufferedGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //        delta += 0.02f; // todo [REFACTOR] move to another function
 //    }
+
     public static void swapBuffers() {
         Graphics graphics = bufferStrategy.getDrawGraphics();
         graphics.drawImage(bufferedImage, 0, 0, null);
@@ -111,5 +114,9 @@ public abstract class Display {
      */
     public static void setTitle(String title) {
         window.setTitle(title);
+    }
+
+    public static void addInputListener(Input inputListener) {
+        window.add(inputListener);
     }
 }
