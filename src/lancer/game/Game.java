@@ -2,6 +2,9 @@ package lancer.game;
 
 import lancer.display.Display;
 import lancer.IO.Input;
+import lancer.graphics.Sprite;
+import lancer.graphics.SpriteSheet;
+import lancer.graphics.TextureAtlas;
 import lancer.utils.Time;
 
 import java.awt.*;
@@ -12,9 +15,9 @@ import java.awt.event.KeyEvent;
  */
 public class Game implements Runnable {
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
-    public static final String TITLE = "Tanks";
+    public static final int WIDTH = 800; // Ширина окна
+    public static final int HEIGHT = 600; // Высота окна
+    public static final String TITLE = "Tanks"; // Заголовок окна
     public static final int CLEAR_COLOR = 0xff000000;
     public static final int NUM_BUFFERS = 3;
 
@@ -22,18 +25,14 @@ public class Game implements Runnable {
     public static final float UPDATE_INTERVAL = Time.SECOND / UPDATE_RATE; // Время которое должно проходить между каждым обновление физики (кадром в сек)
     public static final long IDLE_TIME = 1; // Останавливаем наш фрейд, чтоб дать другим процессам сработать нормально
 
+    public static final String ATLAS_FILE_NAME = "texture_atlas.png"; // Название ресурса - Атласа
+
     private boolean running; // Проверяем "бежит" ли игра или нет
     private Thread gameThread; // Процесс который запускается дополнительно
-    private Graphics2D graphics2D;
-    private Input input;
-
-    //temp
-    float x = 350;
-    float y = 250;
-    float delta = 0;
-    float radius = 50;
-    float speed = 2;
-    //temp end
+    private Graphics2D graphics2D; // Графика
+    private Input input; // Значение ввода с клавиатуры
+    private TextureAtlas atlas; // Атлас - изображение всей игры
+    private Player player;
 
     /**
      * Вся логика игры
@@ -45,6 +44,10 @@ public class Game implements Runnable {
         graphics2D = Display.getGraphics();
         input = new Input();
         Display.addInputListener(input);
+
+        /* Подгружаем атлас всей игры */
+        atlas = new TextureAtlas(ATLAS_FILE_NAME);
+        player = new Player(300, 300, 2, 3, atlas);
     }
 
     /**
@@ -85,21 +88,7 @@ public class Game implements Runnable {
      * Служит для подсчета всех математических расчетов физики игры
      */
     private void update() {
-        if (input.getKey(KeyEvent.VK_UP)) {
-            y -= speed;
-        }
-
-        if (input.getKey(KeyEvent.VK_DOWN)) {
-            y += speed;
-        }
-
-        if (input.getKey(KeyEvent.VK_LEFT)) {
-            x -= speed;
-        }
-
-        if (input.getKey(KeyEvent.VK_RIGHT)) {
-            x += speed;
-        }
+        player.update(input);
     }
 
     /**
@@ -107,8 +96,7 @@ public class Game implements Runnable {
      */
     private void render() {
         Display.clear();
-        graphics2D.setColor(Color.yellow);
-        graphics2D.fillOval((int) (x + Math.sin(delta) * 200), (int) y, (int) radius * 2, (int) radius * 2);
+        player.render(graphics2D);
         Display.swapBuffers(); // Мы закончили рисовать нашу сцену, теперь ее нужно отобразить
     }
 
