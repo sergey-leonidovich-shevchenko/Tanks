@@ -5,6 +5,7 @@ import lancer.IO.Input;
 import lancer.graphics.Sprite;
 import lancer.graphics.SpriteSheet;
 import lancer.graphics.TextureAtlas;
+import lancer.level.Level;
 import lancer.utils.Time;
 
 import java.awt.*;
@@ -33,6 +34,7 @@ public class Game implements Runnable {
     private Input input; // Значение ввода с клавиатуры
     private TextureAtlas atlas; // Атлас - изображение всей игры
     private Player player;
+    private Level level;
 
     /**
      * Вся логика игры
@@ -48,6 +50,7 @@ public class Game implements Runnable {
         /* Подгружаем атлас всей игры */
         atlas = new TextureAtlas(ATLAS_FILE_NAME);
         player = new Player(300, 300, 2, 3, atlas);
+        level = new Level(atlas);
     }
 
     /**
@@ -89,6 +92,7 @@ public class Game implements Runnable {
      */
     private void update() {
         player.update(input);
+        level.update();
     }
 
     /**
@@ -96,6 +100,7 @@ public class Game implements Runnable {
      */
     private void render() {
         Display.clear();
+        level.render(graphics2D);
         player.render(graphics2D);
         Display.swapBuffers(); // Мы закончили рисовать нашу сцену, теперь ее нужно отобразить
     }
